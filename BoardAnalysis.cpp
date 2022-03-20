@@ -40,10 +40,10 @@ namespace BoardAnalysis
                 if (board.GetCell(coords.x + dx, coords.y + dy) != color) continue; // not player
 
                 // check for whether the adjacent tile would loop forward or backward in respect to that color's goal direction
-                bool isLoopBack = (color == TileType::blue && coords.y + dy < 0) ||
-                    (color == TileType::red && coords.x + dx < 0);
-                bool isLoopFrwd = (color == TileType::blue && coords.y + dy >= board.GetSidelen()) ||
-                    (color == TileType::red && coords.x + dx >= board.GetSidelen());
+                bool isLoopBack = (color == TileType::red && coords.y + dy < 0) ||
+                    (color == TileType::blue && coords.x + dx < 0);
+                bool isLoopFrwd = (color == TileType::red && coords.y + dy >= board.GetSidelen()) ||
+                    (color == TileType::blue && coords.x + dx >= board.GetSidelen());
 
                 bool isLoop = isLoopBack || isLoopFrwd;
 
@@ -73,11 +73,11 @@ namespace BoardAnalysis
         auto allWinpaths = std::vector<std::vector<int>>();
         for (int i = 0; i < board.GetSidelen(); i++)
         {
-            auto startNode = type == TileType::blue ? Node(i, 0, board, 0) : Node(0, i, board, 0);
-            auto targetNode = type == TileType::blue ? Node(i, 0, board, 1) : Node(0, i, board, 1);
+            auto startNode = type == TileType::red ? Node(i, 0, board, 0) : Node(0, i, board, 0);
+            auto targetNode = type == TileType::red ? Node(i, 0, board, 1) : Node(0, i, board, 1);
 
             if (board.GetCell(startNode.GetCoords()) != type) continue;
-            auto endFunc = [&](Node node) {return WinGraphFunc(board, node, startNode); };
+            auto endFunc = [&](Node node) { return WinGraphFunc(board, node, startNode); };
             auto parentMap = BFS<Node>::LazyGetParentMap(startNode, Node::GoalNode(), endFunc);
             auto path = BFS<Node>::ShortestPath(parentMap, Node::GoalNode());
 

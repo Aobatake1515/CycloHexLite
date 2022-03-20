@@ -55,6 +55,9 @@ namespace BoardAnalysis
             return Utils::BindRange(index, 0, sidelen * sidelen);
         }
 
+        /// <summary>
+        /// Gets the layer of the node in terms of looping past the grid bounds
+        /// </summary>
         int GetLayer() const
         {
             if (index >= 0)
@@ -113,10 +116,31 @@ namespace BoardAnalysis
         }
     };
 
+    /// <summary>
+    /// graph function for checking whether a win has occured from the starting node
+    /// </summary>
+    /// <param name="board">board used</param>
+    /// <param name="node">current node that connections are being checked for</param>
+    /// <param name="start">starting node, used to know if a given node is an ending node</param>
+    /// <returns>nodes that are reachable from node</returns>
     std::set<Node> WinGraphFunc(const Board& board, Node node, Node start);
 
+    /// <summary>
+    /// graph function for a board
+    /// </summary>
+    /// <param name="board">board used</param>
+    /// <param name="node">current node that connections are being checked for</param>
+    /// <param name="endFunc">function to know whether a given node is a valid end node</param>
+    /// <returns>nodes that are reachable from node</returns>
     std::set<Node> BoardGraphFunc(const Board& board, Node node, std::function<bool(Node)> endFunc);
 
+    /// <summary>
+    /// finds the winning path of a given tiletype on the board if it exists
+    /// </summary>
+    /// <param name="board">board used</param>
+    /// <param name="type">tiletype checked</param>
+    /// <returns>one of the shortest winning paths if possible, otherwise empty vector</returns>
     std::vector<int> WinningPath(const Board& board, TileType type);
+
 };
 

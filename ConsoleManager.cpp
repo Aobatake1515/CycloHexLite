@@ -88,11 +88,6 @@ static string MakeDarkRed(string text)
 // end of helper section
 
 
-void ConsoleManager::ClearConsole()
-{
-	system("cls");
-}
-
 void ConsoleManager::PrintBoard(const HexGame& hexGame)
 {
 	auto board = hexGame.GetBoardRef();
@@ -192,7 +187,6 @@ void ConsoleManager::PrintTurnHeader(const HexGame& hexGame)
 
 void ConsoleManager::PrintFullTurn(const HexGame& hexGame)
 {
-	ClearConsole();
 	PrintTurnHeader(hexGame);
 	PrintBoard(hexGame);
 }
@@ -224,10 +218,14 @@ ConsoleManager::CommandType ConsoleManager::GetTurnCommandBlocking(const HexGame
 			out_coords.y = Utils::BindRange(c_y + board.GetShiftY(), 0, board.GetSidelen());
 
 			if (c_x < 0 || c_y < 0 ||
-				c_x >= hexGame.GetSideLen() || c_y >= hexGame.GetSideLen() ||
-				hexGame.GetBoardRef().GetCell(out_coords) != TileType::empty)
+				c_x >= hexGame.GetSideLen() || c_y >= hexGame.GetSideLen())
 			{
 				cout << "Invalid coordinates given, please try again \nenter the coordinates as: <column letter> <row number>" << endl;
+				continue;
+			}
+			else if (hexGame.GetBoardRef().GetCell(out_coords) != TileType::empty)
+			{
+				cout << "Coordinates given are occupied, please try again" << endl;
 				continue;
 			}
 			else return CommandType::Place;
@@ -268,13 +266,23 @@ ConsoleManager::CommandType ConsoleManager::GetTurnCommandBlocking(const HexGame
 			cout << "Invalid direction given, please try again \nshift options are \"U\":Up, \"D\":Down, \"L\":Left, \"R\":Right, and \"Reset\"" << endl;
 			continue;
 		}
-		if (commandString[0] == 'r') // for restart
+		if (commandString == "restart") // for restart
 		{
 			return CommandType::Restart;
 		}
-		if (commandString[0] == 'q') // for quit
+		if (commandString == "quit") // for quit
 		{
 			return CommandType::Quit;
+		}
+		if (commandString == "help") // for help
+		{
+			cout << "The following commands are valid:" << endl;
+			cout << "   Place a tile:     P <column letter> <row number>" << endl;
+			cout << "   Shift the board:  S <\"U\":Up | \"D\":Down | \"L\":Left | \"R\":Right | \"Reset\">" << endl;
+			cout << "   Restart the game: Restart" << endl;
+			cout << "   Quit the game:    Quit" << endl;
+			cout << "   Help:             Help" << endl;
+			continue;
 		}
 	}
 }

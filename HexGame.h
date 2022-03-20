@@ -72,6 +72,11 @@ public:
     /// <returns></returns>
     bool CheckWin();
 
+    /// <summary>
+    /// checks whether the given coordinates are on the winning path if one exists
+    /// does not actually check for whether a win occured, must check before using
+    /// uses percieved coordinates, not true coordinates
+    /// </summary>
     bool IsOnWinPath(int x, int y) const;
 
     /// <summary>

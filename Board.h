@@ -179,6 +179,11 @@ public:
         return RelativeShift(in_x, in_y, Board(sidelen));
     }
 
+    /// <summary>
+    /// Makes a string label for the given coords
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
     std::string GetLabel(int x, int y) const
     {
         int shiftedX = Utils::BindRange(x - shiftX, 0, sidelen);

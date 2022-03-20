@@ -22,7 +22,6 @@ int main()
 			hexGame.ShiftBoard(coords.x, coords.y);
 			break;
 		case ConsoleManager::CommandType::Restart:
-			ConsoleManager::ClearConsole();
 			ConsoleManager::GetGameStartData(boardsize, starting);
 			hexGame.Reset(boardsize, starting);
 			break;

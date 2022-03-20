@@ -139,7 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BFS.cpp" />
     <ClCompile Include="BoardAnalysis.cpp" />
     <ClCompile Include="ConsoleManager.cpp" />
     <ClCompile Include="CycloHexLite.cpp" />

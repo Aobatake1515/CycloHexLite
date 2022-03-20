@@ -1,6 +1,8 @@
 #pragma once
 
-
+/// <summary>
+/// Simple wrapper for 2 ints
+/// </summary>
 struct Vei2
 {
 	int x;

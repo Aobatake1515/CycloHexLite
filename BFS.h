@@ -3,7 +3,6 @@
 #include<set>
 #include<vector>
 #include<queue>
-#include<stack>
 #include<functional>
 
 // T_Node must have working <, ==, and != operators
@@ -14,7 +13,15 @@ struct BFS
     {
         std::map<T_Node, std::set<T_Node>> edges;
     };
-
+    
+    /// <summary>
+    /// Performs BFS to make a tree with the shortest path from the start node
+    /// Sets the parent of the starting node as itself
+    /// !!!Cannot have self loops!!! (may want to change later)
+    /// </summary>
+    /// <param name="start">starting node</param>
+    /// <param name="graph">graph to search</param>
+    /// <returns>map with keys: reachable nodes and vals: parent in tree</returns>
     static std::map<T_Node, T_Node> GetParentMap(T_Node start, Graph graph)
     {
         auto parentMap = std::map<T_Node, T_Node>();
@@ -47,6 +54,9 @@ struct BFS
         return parentMap;
     }
 
+    /// <summary>
+    /// Gets a set of all nodes reachable from the starting node
+    /// </summary>
     static std::set<T_Node> GetConnectedNodes(T_Node start, Graph graph)
     {
         auto retVal = std::set<T_Node>();
@@ -63,34 +73,13 @@ struct BFS
         return retVal;
     }
 
-    static std::vector<std::set<T_Node>> GetNodeDepths(std::map<T_Node, T_Node> parentMap)
-    {
-        std::vector<std::set<T_Node>> nodeDepths = std::vector<std::set<T_Node>>();
-
-        for(auto pair : parentMap)
-        {
-            auto child = pair.first;
-            auto nodeStack = std::stack<T_Node>();
-            T_Node tempNode = child;
-            // root node has value = key
-            while (tempNode != parentMap[tempNode])
-            {
-                nodeStack.push(tempNode);
-                tempNode = parentMap[tempNode];
-            }
-            for (int i = 0; nodeStack.size() != 0; i++)
-            {
-                if (nodeDepths.size() <= i)
-                {
-                    nodeDepths.emplace_back();
-                }
-                nodeDepths[i].insert(nodeStack.top());
-                nodeStack.pop();
-            }
-        }
-        return nodeDepths;
-    }
-
+    /// <summary>
+    /// Shortest path to the target node if it exists
+    /// *A bit slower than necessary since parentMap goes to all nodes rather than stopping at a target
+    /// </summary>
+    /// <param name="parentMap">tree of shortest paths</param>
+    /// <param name="target">target node</param>
+    /// <returns>shortest path, empty if no path</returns>
     static std::vector<T_Node> ShortestPath(std::map<T_Node, T_Node> parentMap, T_Node target)
     {
         auto retVal = std::vector<T_Node>();
@@ -108,11 +97,20 @@ struct BFS
         return retVal;
     }
 
+    // number of nodes reachable
     static int AccessableSize(std::map<T_Node, T_Node> parentMap)
     {
         return parentMap.size();
     }
 
+    /// <summary>
+    /// Like GetParentMap, but uses a function to represent the graph rather than a graph object
+    /// Terminates at an ending node since the graph could be infinite
+    /// </summary>
+    /// <param name="start">starting node</param>
+    /// <param name="end">ending node, must be reachable if the graph is infinite</param>
+    /// <param name="graphFunc">function for the graph, takes a node and returns a set of connected nodes</param>
+    /// <returns>map with keys: reachable nodes and vals: parent in tree</returns>
     static std::map<T_Node, T_Node> LazyGetParentMap(T_Node start, T_Node end, std::function<std::set<T_Node>(T_Node)> graphFunc)
     {
         auto parentMap = std::map<T_Node, T_Node>();

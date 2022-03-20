@@ -18,9 +18,6 @@
     <ClCompile Include="CycloHexLite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BFS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BoardAnalysis.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
