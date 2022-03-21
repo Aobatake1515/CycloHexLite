@@ -90,7 +90,7 @@ static string MakeDarkRed(string text)
 
 void ConsoleManager::PrintBoard(const HexGame& hexGame)
 {
-	auto board = hexGame.GetBoardRef();
+	auto& board = hexGame.GetBoardRef();
 	Vei2 shift(board.GetShiftX(), board.GetShiftY());
 	int sidelen = board.GetSidelen();
 
@@ -193,7 +193,7 @@ void ConsoleManager::PrintFullTurn(const HexGame& hexGame)
 
 ConsoleManager::CommandType ConsoleManager::GetTurnCommandBlocking(const HexGame& hexGame, Vei2& out_coords)
 {
-	auto board = hexGame.GetBoardRef();
+	auto& board = hexGame.GetBoardRef();
 	out_coords = Vei2(-1, -1);
 
 	string commandString = "";

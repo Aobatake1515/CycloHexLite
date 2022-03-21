@@ -32,7 +32,7 @@ namespace BoardAnalysis
         {}
 
         // for "layers" where looping in one direction puts you in a different state
-        Node(int x, int y, Board board, int layer = 0)
+        Node(int x, int y, const Board& board, int layer = 0)
         {
             shiftx = board.GetShiftX();
             shifty = board.GetShiftY();

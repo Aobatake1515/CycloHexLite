@@ -2,6 +2,7 @@
 
 #include<string>
 #include<cassert>
+#include<vector>
 #include "Utils.h"
 #include "Vei2.h"
 
@@ -16,7 +17,7 @@ enum class TileType
 class Board
 {
 private:
-    TileType* boardArr; // linear array to store 2d of pieces, always square
+    std::vector<TileType> boardArr; // linear array to store 2d of pieces, always square
     int sidelen; // side length of board
     // amount shifted positive x dir
     // original x = percieved x - shiftx
@@ -27,34 +28,10 @@ private:
 public:
     Board(int sidelen)
         : sidelen(sidelen)
-        , boardArr(nullptr)
+        , boardArr(sidelen * sidelen, TileType::empty)
         , shiftX(0)
         , shiftY(0)
-    {
-        boardArr = new TileType[sidelen * sidelen];
-        for (int i = 0; i < sidelen * sidelen; i++)
-        {
-            boardArr[i] = TileType::empty;
-        }
-    }
-
-    Board(const Board& board)
-        : sidelen(board.sidelen)
-        , shiftX(board.shiftX)
-        , shiftY(board.shiftY)
-    {
-        boardArr = new TileType[sidelen * sidelen];
-        for (int i = 0; i < sidelen * sidelen; i++)
-        {
-            boardArr[i] = board.boardArr[i];
-        }
-    }
-
-    ~Board()
-    {
-        if (boardArr)
-            delete[] boardArr;
-    }
+    {}
 
     int GetSidelen() const { return sidelen; }
     int GetShiftX() const { return shiftX; }
@@ -66,9 +43,9 @@ public:
     /// </summary>
     void Reset()
     {
-        for (int i = 0; i < GetNumTiles(); i++)
+        for (auto& tile : boardArr)
         {
-            boardArr[i] = TileType::empty;
+            tile = TileType::empty;
         }
         shiftX = 0;
         shiftY = 0;
@@ -79,14 +56,9 @@ public:
     /// </summary>
     void Resize(int sidelen)
     {
-        if (boardArr)
-            delete[] boardArr;
         this->sidelen = sidelen;
-        boardArr = new TileType[sidelen * sidelen];
-        for (int i = 0; i < sidelen * sidelen; i++)
-        {
-            boardArr[i] = TileType::empty;
-        }
+        boardArr.clear();
+        boardArr.resize(sidelen * sidelen, TileType::empty);
         shiftX = 0;
         shiftY = 0;
     }
